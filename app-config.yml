@@ -1,0 +1,14 @@
+# 每个项目只修改这里。所有键必须存在；REPLACE_ME 会使任务立即失败。
+app_name: LendMosaic
+project_path: LendMosaic.xcodeproj
+scheme: LendMosaic
+team_id: 22TNB59C4J
+bundle_id: com.taskstudio.lendmosaic
+
+# 无 CloudKit 时使用 false，后面两个值保持空字符串。
+cloudkit_enabled: true
+entitlements_path: "LendMosaic/LendMosaic.entitlements"
+cloudkit_container_id: "iCloud.com.taskstudio.lendmosaic"
+
+# 空字符串表示使用 Runner 默认 Xcode；固定版本时填实际已安装路径。
+xcode_developer_dir: ""

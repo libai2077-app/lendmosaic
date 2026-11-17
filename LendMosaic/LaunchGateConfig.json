@@ -1,0 +1,13 @@
+{
+  "container_id": "iCloud.com.taskstudio.lendmosaic",
+  "record_name": "C8019EAF-8453-4B6E-9088-E9BF25ED7357",
+  "record_type": "AppConfig",
+  "database": "public",
+  "zone": "default",
+  "timeout_seconds": 2,
+  "request_policy": "foreground_exponential_backoff_until_success_or_permanent_error",
+  "open_policy": "reopen_after_each_background_return_until_open_failure",
+  "production_verified": false,
+  "data_field": "ThemeDataDesc",
+  "request_timeout_seconds": 2
+}

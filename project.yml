@@ -1,0 +1,93 @@
+name: LendMosaic
+options:
+  deploymentTarget:
+    iOS: '18.6'
+  developmentLanguage: en
+  knownRegions: &id001
+  - en
+  - ja
+  - ko
+  - es
+  - fr
+  - de
+  - pt-BR
+  - it
+settings:
+  base:
+    SWIFT_VERSION: '6.0'
+    IPHONEOS_DEPLOYMENT_TARGET: '18.6'
+    TARGETED_DEVICE_FAMILY: '1'
+    MARKETING_VERSION: '1.0'
+    CURRENT_PROJECT_VERSION: '1'
+    GENERATE_INFOPLIST_FILE: 'YES'
+    SWIFT_EMIT_LOC_STRINGS: false
+    CODE_SIGNING_ALLOWED[sdk=iphonesimulator*]: false
+    ENABLE_TESTABILITY[sdk=iphonesimulator*]: true
+targets:
+  LendMosaic:
+    type: application
+    platform: iOS
+    sources:
+    - LendMosaic
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.taskstudio.lendmosaic
+        TARGETED_DEVICE_FAMILY: '1'
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        INFOPLIST_KEY_CFBundleDisplayName: LendMosaic
+        INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: false
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        CLOUDKIT_BUILD_CONDITION_NO: CLOUDKIT_UNSIGNED_BUILD
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: $(inherited) $(CLOUDKIT_BUILD_CONDITION_$(CODE_SIGNING_ALLOWED))
+        CODE_SIGN_ENTITLEMENTS: LendMosaic/LendMosaic.entitlements
+        CODE_SIGN_STYLE: Manual
+        DEVELOPMENT_TEAM: ''
+        PROVISIONING_PROFILE_SPECIFIER: ''
+    info:
+      path: LendMosaic/Info.plist
+      properties:
+        UILaunchScreen:
+          UIColorName: LaunchWhite
+        CFBundleLocalizations: *id001
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+    attributes:
+      SystemCapabilities:
+        com.apple.iCloud:
+          enabled: 1
+  LendMosaicTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+    - Tests
+    dependencies:
+    - target: LendMosaic
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.taskstudio.lendmosaic.tests
+        TARGETED_DEVICE_FAMILY: '1'
+  LendMosaicUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+    - UITests
+    dependencies:
+    - target: LendMosaic
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.taskstudio.lendmosaic.uitests
+        TARGETED_DEVICE_FAMILY: '1'
+        TEST_TARGET_NAME: LendMosaic
+schemes:
+  LendMosaic:
+    build:
+      targets:
+        LendMosaic: all
+    test:
+      targets:
+      - LendMosaicTests
+      - LendMosaicUITests
+      gatherCoverageData: true
+      config: Release
+    run:
+      debugEnabled: false

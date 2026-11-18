@@ -24,7 +24,11 @@ def validate(p, env):
         assert env['CLOUDKIT_CONTAINER_ID'] in e.get('com.apple.developer.icloud-container-identifiers', []), 'CloudKit container missing'
         allowed = e.get('com.apple.developer.icloud-container-environment', [])
         assert 'Production' in ([allowed] if isinstance(allowed, str) else allowed), 'Production not authorized'
-        assert 'CloudKit' in e.get('com.apple.developer.icloud-services', []), 'CloudKit service missing'
+        services = e.get('com.apple.developer.icloud-services')
+        assert (
+            services == '*'
+            or (isinstance(services, list) and 'CloudKit' in services)
+        ), 'CloudKit service missing'
     return {'uuid': p['UUID'], 'app_identifier': app,
             'fingerprints': [hashlib.sha1(c).hexdigest().upper() for c in p['DeveloperCertificates']]}
 

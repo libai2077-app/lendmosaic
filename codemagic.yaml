@@ -1,0 +1,42 @@
+workflows:
+  ios-package:
+    name: iOS 签名打包
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+
+    environment:
+      groups:
+        - ios_signing
+
+    scripts:
+      - name: 编译并导出 IPA
+        script: |
+          #!/bin/bash
+          set -euo pipefail
+          cd "$CM_BUILD_DIR"
+
+          : "${IOS_BUILD_NUMBER:?请在 ios_signing 变量组设置 IOS_BUILD_NUMBER}"
+          export BUILD_NUMBER="$IOS_BUILD_NUMBER"
+          export UPLOAD_IPA=false
+
+          # 原脚本依赖 GitHub 的 RUNNER_TEMP，这里为 Codemagic 提供临时目录。
+          export RUNNER_TEMP
+          RUNNER_TEMP="$(mktemp -d "${TMPDIR:-/tmp}/ios-ci.XXXXXXXX")"
+
+          # 保留公开构建产物和日志，再清理临时签名目录。
+          finish() {
+            code=$?
+            trap - EXIT
+            mkdir -p "$CM_BUILD_DIR/ci-artifacts"
+            if [ -d "$RUNNER_TEMP/ios-release-output" ]; then
+              cp -R "$RUNNER_TEMP/ios-release-output/." "$CM_BUILD_DIR/ci-artifacts/" || true
+            fi
+            rm -rf "$RUNNER_TEMP"
+            exit "$code"
+          }
+          trap finish EXIT
+
+          bash build-upload.sh
+
+    artifacts:
+      - ci-artifacts/**
